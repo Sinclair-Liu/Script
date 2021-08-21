@@ -21,7 +21,7 @@ const $ = new Env("中青看点浏览赚&看看赚")
 let startArr = [], lookArr=[];
 let gainscore = 0, lookscore = 0;
 let StartBody = [],LookBody = [];
-let startbodys = $.getdata('youth_start');
+let startbodys = $.getdata('youth_start') || "";
 let lookbodys = $.getdata('youth_look')
 
 if (isGetCookie = typeof $request !==`undefined`) {
