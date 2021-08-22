@@ -1,17 +1,5 @@
 /*
-更新时间: 2021-05-22 21:55
-
-中青看点浏览赚+看看赚任务，手动完成任务，获取请求体，支持boxjs及Github Actions，多请求用"&"分开，点击任务，支持自动获取请求
-
-https:\/\/kandian\.wkandian\.com\/v5\/task\/browse_start\.json url script-request-body youth_gain.js
-
-https:\/\/kandian\.wkandian\.com\/v5\/Nameless\/adlickstart\.json url script-request-body youth_gain.js
-
-  强制增加中青看点看看赚入口，和签到Cookie有冲突，请使用时添加，不用时请禁用
-  https:\/\/kd\.youth\.cn\/WebApi\/NewTaskIos\/getTaskList url script-response-body youdata.js
-
-
-多个请求体时用'&'号或者换行隔开"，本脚本可自动删除失效请求，请须知 ‼️
+仅供获取使用，我是真不明白，这些脚本怎么就喜欢边获取边跑，无语无语
 
 */
 
@@ -21,201 +9,201 @@ const $ = new Env("中青看点浏览赚&看看赚")
 let startArr = [], lookArr=[];
 let gainscore = 0, lookscore = 0;
 let StartBody = [],LookBody = [];
-let startbodys = $.getdata('youth_start') || "";
+let startbodys = $.getdata('youth_start');
 let lookbodys = $.getdata('youth_look')
 
 if (isGetCookie = typeof $request !==`undefined`) {
    GetCookie();
    $.done()
 } 
-if (!$.isNode() && !lookbodys) {
-    $.msg($.name, "您未获取看看赚请求，请先获取");
-} else if (!$.isNode() && !startbodys) {
-    $.msg($.name, "您未获取浏览赚请求，请先获取");
-}
-if (!$.isNode() && !startbodys.indexOf("&") == -1) {
-    startArr.push(startbodys)
-} else if (!$.isNode() && !lookbodys.indexOf("&") == -1) {
-    lookArr.push(lookbodys)
-} else {
-    if (!$.isNode() && !startbodys.indexOf("&") > -1) {
-        StartBody = startbodys.split('&');
-    }
-    if (!$.isNode() && !lookbodys.indexOf("&") > -1) {
-        LookBody = lookbodys.split('&');
-    }
-    if ($.isNode()) {
-        if (process.env.YOUTH_START && process.env.YOUTH_START.indexOf('&') > -1) {
-            StartBody = process.env.YOUTH_START.split('&');
-        } else {
-            StartBody = [process.env.YOUTH_START]
-        };
-        if (process.env.YOUTH_LOOK && process.env.YOUTH_LOOK.indexOf('&') > -1) {
-            LookBody = process.env.YOUTH_LOOK.split('&');
-        } else {
-            LookBody = [process.env.YOUTH_LOOK]
-        }
-    }
-    Object.keys(StartBody).forEach((item) => {
-        if (StartBody[item]) {
-            startArr.push(StartBody[item])
-        }
-    });
-    Object.keys(LookBody).forEach((item) => {
-        if (LookBody[item]) {
-            lookArr.push(LookBody[item])
-        }
-    })
-}
-timeZone = new Date().getTimezoneOffset() / 60;
-timestamp = Date.now() + (8 + timeZone) * 60 * 60 * 1000;
-bjTime = new Date(timestamp).toLocaleString('zh', {
-    hour12: false,
-    timeZoneName: 'long'
-});
-console.log(`\n === 脚本执行 ${bjTime} ===\n`);
-!(async() => {
-    $.log(`您共提供${startArr.length}次浏览赚任务`)
-    if (startArr.length !== 0) {
-        for (let i = 0; i < startArr.length; i++) {
-            if (startArr[i]) {
-                gainbody = startArr[i];
-                $.index = i + 1;
-                $.log(`-------------------------\n\n开始中青看点浏览赚第${$.index}次任务`)
-            }
-            await GainStart();
-        }
-        console.log(`-------------------------\n\n中青看点共完成${$.index}次任务，共计获得${gainscore}个青豆，浏览赚任务全部结束`);
-        //$.msg("中青看点浏览赚", `共完成${$.index}次任务`+`  共计获得${gainscore}个青豆`);
-    }
-    $.log(`\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n您共提供${lookArr.length}次看看赚任务\n`)
-    if (lookArr.length !== 0) {
-        for (let k = 0; k < lookArr.length; k++) {
-            if (lookArr[k]) {
-                lookbody = lookArr[k];
-                $.index = k + 1;
-                $.log(`-------------------------\n\n开始中青看点看看赚第${$.index}次任务`)
-            }
-            await lookStart();
-        }
-        console.log(`-------------------------\n\n中青看点共完成${$.index}次任务，共计获得${lookscore}个青豆，看看赚任务全部结束`);
-        $.msg("中青看点看看赚", '共完成' + (lookArr.length + startArr.length) + '次任务，共计获得' + parseInt(lookscore + gainscore) + '个青豆');
-    }
-    if ($.isNode()) {
-        //await notify.sendNotify($.name，`共完成${$.index}次任务，\n共计获得${gainscore}个青豆`
-    }
-})()
-    .catch((e) => $.logErr(e))
-    .finally(() => $.done())
+// if (!$.isNode() && !lookbodys) {
+//     $.msg($.name, "您未获取看看赚请求，请先获取");
+// } else if (!$.isNode() && !startbodys) {
+//     $.msg($.name, "您未获取浏览赚请求，请先获取");
+// }
+// if (!$.isNode() && !startbodys.indexOf("&") == -1) {
+//     startArr.push(startbodys)
+// } else if (!$.isNode() && !lookbodys.indexOf("&") == -1) {
+//     lookArr.push(lookbodys)
+// } else {
+//     if (!$.isNode() && !startbodys.indexOf("&") > -1) {
+//         StartBody = startbodys.split('&');
+//     }
+//     if (!$.isNode() && !lookbodys.indexOf("&") > -1) {
+//         LookBody = lookbodys.split('&');
+//     }
+//     if ($.isNode()) {
+//         if (process.env.YOUTH_START && process.env.YOUTH_START.indexOf('&') > -1) {
+//             StartBody = process.env.YOUTH_START.split('&');
+//         } else {
+//             StartBody = [process.env.YOUTH_START]
+//         };
+//         if (process.env.YOUTH_LOOK && process.env.YOUTH_LOOK.indexOf('&') > -1) {
+//             LookBody = process.env.YOUTH_LOOK.split('&');
+//         } else {
+//             LookBody = [process.env.YOUTH_LOOK]
+//         }
+//     }
+//     Object.keys(StartBody).forEach((item) => {
+//         if (StartBody[item]) {
+//             startArr.push(StartBody[item])
+//         }
+//     });
+//     Object.keys(LookBody).forEach((item) => {
+//         if (LookBody[item]) {
+//             lookArr.push(LookBody[item])
+//         }
+//     })
+// }
+// timeZone = new Date().getTimezoneOffset() / 60;
+// timestamp = Date.now() + (8 + timeZone) * 60 * 60 * 1000;
+// bjTime = new Date(timestamp).toLocaleString('zh', {
+//     hour12: false,
+//     timeZoneName: 'long'
+// });
+// console.log(`\n === 脚本执行 ${bjTime} ===\n`);
+// !(async() => {
+//     $.log(`您共提供${startArr.length}次浏览赚任务`)
+//     if (startArr.length !== 0) {
+//         for (let i = 0; i < startArr.length; i++) {
+//             if (startArr[i]) {
+//                 gainbody = startArr[i];
+//                 $.index = i + 1;
+//                 $.log(`-------------------------\n\n开始中青看点浏览赚第${$.index}次任务`)
+//             }
+//             await GainStart();
+//         }
+//         console.log(`-------------------------\n\n中青看点共完成${$.index}次任务，共计获得${gainscore}个青豆，浏览赚任务全部结束`);
+//         //$.msg("中青看点浏览赚", `共完成${$.index}次任务`+`  共计获得${gainscore}个青豆`);
+//     }
+//     $.log(`\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n您共提供${lookArr.length}次看看赚任务\n`)
+//     if (lookArr.length !== 0) {
+//         for (let k = 0; k < lookArr.length; k++) {
+//             if (lookArr[k]) {
+//                 lookbody = lookArr[k];
+//                 $.index = k + 1;
+//                 $.log(`-------------------------\n\n开始中青看点看看赚第${$.index}次任务`)
+//             }
+//             await lookStart();
+//         }
+//         console.log(`-------------------------\n\n中青看点共完成${$.index}次任务，共计获得${lookscore}个青豆，看看赚任务全部结束`);
+//         $.msg("中青看点看看赚", '共完成' + (lookArr.length + startArr.length) + '次任务，共计获得' + parseInt(lookscore + gainscore) + '个青豆');
+//     }
+//     if ($.isNode()) {
+//         //await notify.sendNotify($.name，`共完成${$.index}次任务，\n共计获得${gainscore}个青豆`
+//     }
+// })()
+//     .catch((e) => $.logErr(e))
+//     .finally(() => $.done())
 
-function GainStart() {
-    return new Promise((resolve, reject) => {
-        $.post(gainHost('task/browse_start.json', gainbody), async(error, resp, data) => {
-            let startres = JSON.parse(data);
-            if (startres.success == false) {
-                if($.isNode() == false) {
-                    smbody = $.getdata('youth_start').replace(gainbody + "&", "");
-                    $.setdata(smbody, 'youth_start');
-                    $.log(startres.message + "已自动删除")
-                }
-            } else {
-                comstate = startres.items.comtele_state;
-                if (comstate == 0) {
-                    $.log("任务开始，" + startres.items.banner_id + startres.message);
-                    await $.wait(10000);
-                    await GainEnd()
-                } else if (comstate == 1) {
-                    $.log("任务:" + startres.items.banner_id + "已完成，本次跳过");
-                }
-            }
-            resolve()
-        })
-    })
-}
+// function GainStart() {
+//     return new Promise((resolve, reject) => {
+//         $.post(gainHost('task/browse_start.json', gainbody), async(error, resp, data) => {
+//             let startres = JSON.parse(data);
+//             if (startres.success == false) {
+//                 if($.isNode() == false) {
+//                     smbody = $.getdata('youth_start').replace(gainbody + "&", "");
+//                     $.setdata(smbody, 'youth_start');
+//                     $.log(startres.message + "已自动删除")
+//                 }
+//             } else {
+//                 comstate = startres.items.comtele_state;
+//                 if (comstate == 0) {
+//                     $.log("任务开始，" + startres.items.banner_id + startres.message);
+//                     await $.wait(10000);
+//                     await GainEnd()
+//                 } else if (comstate == 1) {
+//                     $.log("任务:" + startres.items.banner_id + "已完成，本次跳过");
+//                 }
+//             }
+//             resolve()
+//         })
+//     })
+// }
 
-function lookStart() {
-    return new Promise((resolve, reject) => {
-        $.post(gainHost('Nameless/adlickstart.json', lookbody), async(error, resp, data) => {
-            startlk = JSON.parse(data);
-            if (startlk.success == false) {
-                smbody = $.getdata('youth_look').replace(lookbody + "&", "");
-                $.setdata(smbody, 'youth_look');
-                $.log(startlk.message + "已自动删除")
-            } else {
-                comstate = startlk.items.comtele_state;
-                if (comstate == 0) {
-                    $.log("任务开始，" + startlk.items.banner_id + startlk.message);
-                    for (let j = 0; j < startlk.items.see_num - startlk.items.read_num; j++) {
-                        $.log("任务执行第" + parseInt(j + 1) + "次")
-                        await $.wait(8000);
-                        await lookstatus()
-                    }
-                    await $.wait(10000);
-                    await lookEnd()
-                } else if (comstate == 1) {
-                    $.log("任务:" + startlk.items.banner_id + "已完成，本次跳过");
-                }
-            }
-            resolve()
-        })
-    })
-}
+// function lookStart() {
+//     return new Promise((resolve, reject) => {
+//         $.post(gainHost('Nameless/adlickstart.json', lookbody), async(error, resp, data) => {
+//             startlk = JSON.parse(data);
+//             if (startlk.success == false) {
+//                 smbody = $.getdata('youth_look').replace(lookbody + "&", "");
+//                 $.setdata(smbody, 'youth_look');
+//                 $.log(startlk.message + "已自动删除")
+//             } else {
+//                 comstate = startlk.items.comtele_state;
+//                 if (comstate == 0) {
+//                     $.log("任务开始，" + startlk.items.banner_id + startlk.message);
+//                     for (let j = 0; j < startlk.items.see_num - startlk.items.read_num; j++) {
+//                         $.log("任务执行第" + parseInt(j + 1) + "次")
+//                         await $.wait(8000);
+//                         await lookstatus()
+//                     }
+//                     await $.wait(10000);
+//                     await lookEnd()
+//                 } else if (comstate == 1) {
+//                     $.log("任务:" + startlk.items.banner_id + "已完成，本次跳过");
+//                 }
+//             }
+//             resolve()
+//         })
+//     })
+// }
 
-function GainEnd() {
-    return new Promise((resolve, reject) => {
-        $.post(gainHost('task/browse_end.json', gainbody), (error, resp, data) => {
-            let endres = JSON.parse(data);
-            if (endres.success == true) {
-                $.log("任务" + endres.items.banner_id + endres.message + "，恭喜获得" + endres.items.score + "个青豆");
-                gainscore += parseInt(endres.items.score)
-            } else {
-                $.log(endres.message)
-            }
-            resolve()
-        })
-    })
-}
+// function GainEnd() {
+//     return new Promise((resolve, reject) => {
+//         $.post(gainHost('task/browse_end.json', gainbody), (error, resp, data) => {
+//             let endres = JSON.parse(data);
+//             if (endres.success == true) {
+//                 $.log("任务" + endres.items.banner_id + endres.message + "，恭喜获得" + endres.items.score + "个青豆");
+//                 gainscore += parseInt(endres.items.score)
+//             } else {
+//                 $.log(endres.message)
+//             }
+//             resolve()
+//         })
+//     })
+// }
 
-function lookstatus() {
-    return new Promise((resolve, reject) => {
-        $.post(gainHost('Nameless/bannerstatus.json', lookbody), (error, resp, data) => {
-            let endres = JSON.parse(data);
-            if (endres.success == true) {
-                $.log("任务" + endres.items.banner_id + endres.message);
-            } else {
-                $.log(endres.message)
-            }
-            resolve()
-        })
-    })
-}
+// function lookstatus() {
+//     return new Promise((resolve, reject) => {
+//         $.post(gainHost('Nameless/bannerstatus.json', lookbody), (error, resp, data) => {
+//             let endres = JSON.parse(data);
+//             if (endres.success == true) {
+//                 $.log("任务" + endres.items.banner_id + endres.message);
+//             } else {
+//                 $.log(endres.message)
+//             }
+//             resolve()
+//         })
+//     })
+// }
 
-function lookEnd() {
-    return new Promise((resolve, reject) => {
-        $.post(gainHost('Nameless/adlickend.json', lookbody), (error, resp, data) => {
-            let endres = JSON.parse(data);
-            if (endres.success == true) {
-                $.log("任务" + endres.items.banner_id + endres.message + "，" + endres.items.desc)
-                lookscore += parseInt(endres.items.score)
-            } else {
-                $.log(endres.message)
-            }
-            resolve()
-        })
-    })
-}
+// function lookEnd() {
+//     return new Promise((resolve, reject) => {
+//         $.post(gainHost('Nameless/adlickend.json', lookbody), (error, resp, data) => {
+//             let endres = JSON.parse(data);
+//             if (endres.success == true) {
+//                 $.log("任务" + endres.items.banner_id + endres.message + "，" + endres.items.desc)
+//                 lookscore += parseInt(endres.items.score)
+//             } else {
+//                 $.log(endres.message)
+//             }
+//             resolve()
+//         })
+//     })
+// }
 
-function gainHost(api, body) {
-    return {
-        url: 'https://kandian.wkandian.com/v5/' + api,
-        headers: {
-            'User-Agent': 'KDApp/2.1.1 (iPhone; iOS 14.6; Scale/3.00)',
-            'Host': 'ios.baertt.com',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: body
-    }
-}
+// function gainHost(api, body) {
+//     return {
+//         url: 'https://kandian.wkandian.com/v5/' + api,
+//         headers: {
+//             'User-Agent': 'KDApp/2.1.1 (iPhone; iOS 14.6; Scale/3.00)',
+//             'Host': 'ios.baertt.com',
+//             'Content-Type': 'application/x-www-form-urlencoded'
+//         },
+//         body: body
+//     }
+// }
 
 
 function GetCookie() {
